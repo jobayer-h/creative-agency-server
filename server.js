@@ -64,6 +64,14 @@ client.connect(err => {
             }
         })
     });
+    //is admin
+    app.post('/isAdmin', (req, res) => {
+        const email= req.body.email;
+        adminList.find({ adminemail: email})
+        .toArray((err,docs) => {
+            res.send(docs.length > 0);
+        })
+    })
 
     //post service 
     app.post('/addservice', (req, res) => {
