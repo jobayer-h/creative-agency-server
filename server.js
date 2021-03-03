@@ -38,7 +38,8 @@ client.connect(err => {
 
     //read orderList
     app.get('/allorders', (req, res) => {
-        orderList.find({})
+        const user = req.query.email;
+        orderList.find({email:user})
         .toArray((err,docs) => {
             res.send(docs);
         })
