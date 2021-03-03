@@ -26,6 +26,8 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
   const orderList = client.db("creativeDB").collection("order");
   const reviewList = client.db("creativeDB").collection("review");
+  const adminList = client.db("creativeDB").collection("admin");
+  const serviceList = client.db("creativeDB").collection("services");
     //place order
     app.post('/placeorder', (req, res) => {
         const order = req.body;
@@ -52,6 +54,36 @@ client.connect(err => {
             res.send(docs);
         })
     })
+    //make admin
+    app.post('/addadmin', (req, res) => {
+        const admin = req.body;
+        adminList.insertOne(admin)
+        .then(response => {
+            if (response.insertedCount > 0) {
+                res.status(200).send('Admin added successfully')
+            }
+        })
+    });
+
+    //post service 
+    app.post('/addservice', (req, res) => {
+        const service = req.body;
+        serviceList.insertOne(service)
+        .then(response => {
+            if (response.insertedCount > 0) {
+                res.status(200).send('Service added successfully')
+            }
+        })
+    });
+    //get service
+    app.get('/services', (req, res) => {
+        serviceList.find({})
+        .toArray((err,docs) => {
+            res.send(docs);
+        })
+    })
+
+
     //post review
     app.post('/submitreview', (req, res) => {
         const review = req.body;
