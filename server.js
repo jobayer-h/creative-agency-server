@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send('Creative-Agency-Heroku Server v2')
 })
 
 
@@ -34,7 +34,7 @@ client.connect(err => {
         orderList.insertOne(order)
         .then(response => {
             if (response.insertedCount > 0) {
-                res.status(200).send('Order added successfully')
+                res.status(200).send(response.insertedCount > 0)
             }
         })
     })
@@ -60,7 +60,7 @@ client.connect(err => {
         adminList.insertOne(admin)
         .then(response => {
             if (response.insertedCount > 0) {
-                res.status(200).send('Admin added successfully')
+                res.status(200).send(response.insertedCount > 0)
             }
         })
     });
@@ -79,7 +79,7 @@ client.connect(err => {
         serviceList.insertOne(service)
         .then(response => {
             if (response.insertedCount > 0) {
-                res.status(200).send('Service added successfully')
+                res.status(200).send(response.insertedCount > 0)
             }
         })
     });
@@ -98,7 +98,7 @@ client.connect(err => {
         reviewList.insertOne(review)
         .then(response => {
             if (response.insertedCount > 0) {
-                res.status(200).send('Review added successfully')
+                res.status(200).send(response.insertedCount > 0)
             }
         })
     })
