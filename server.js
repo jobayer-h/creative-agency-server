@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser')
+const fileUpload = require('express-fileupload');
 require('dotenv').config();
 const app = express();
 const port = 4000
@@ -12,6 +13,8 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_USER_PASS}@cl
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static('services'));
+app.use(fileUpload());
 
 app.get('/', (req, res) => {
   res.send('Creative-Agency-Heroku Server v2')
@@ -75,14 +78,25 @@ client.connect(err => {
 
     //post service 
     app.post('/addservice', (req, res) => {
-        const service = req.body;
+        const info = req.body;
+        const icon = req.files.icon;
+        const service = {
+            ...info,
+            icon:icon.name
+        }
+        
         serviceList.insertOne(service)
         .then(response => {
+            console.log(response);
             if (response.insertedCount > 0) {
-                res.status(200).send(response.insertedCount > 0)
+                res.status(200).send(true)
             }
         })
+
+        icon.mv(`${__dirname}/services/${icon.name}`)
     });
+
+
     //get service
     app.get('/services', (req, res) => {
         serviceList.find({})
@@ -102,6 +116,7 @@ client.connect(err => {
             }
         })
     })
+
 
     //get review
 
